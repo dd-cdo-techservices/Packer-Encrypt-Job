@@ -1,0 +1,52 @@
+{
+    "variables": {
+        "region":         "us-east-2",
+                "aws_subnet_id": "subnet-061b3cc8692d0ad8e",
+        "aws_vpc_id": "vpc-0ff05aa62c74b34bc",
+        "aws_ami_name": "ubuntu-custom-AMI"
+    },
+    "builders": [
+        {
+            "ami_name": "{{user `aws_ami_name`}}",   
+   "instance_type": "t2.micro",
+            "region": "us-east-2",
+         
+		"source_ami_filter": {
+   "filters": {
+     "virtualization-type": "hvm",
+     "name": "ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*",
+     "root-device-type": "ebs"
+    },
+    "owners": [
+     "099720109477"
+    ],
+    "most_recent": true
+   },
+		
+            "vpc_id": "{{user `aws_vpc_id`}}",
+            "subnet_id": "{{user `aws_subnet_id`}}",
+                        "associate_public_ip_address": "true",
+            "ssh_username": "ubuntu",
+            "type": "amazon-ebs",
+                        "communicator": "ssh",
+		"tags": {
+        "OS_Version": "Ubuntu",
+        "Name": "ubuntu-custom-AMI"
+      }
+        }
+    ],
+   "provisioners": [
+	   {
+		"type": "shell",
+		"inline": [
+		   "sudo sed -i 's/us-east-2\\.ec2\\.//g' /etc/apt/sources.list"
+		]   
+	   },
+		   
+  {
+      "type": "shell",
+      "script": "lamp.sh"
+      
+    }
+	]
+}
