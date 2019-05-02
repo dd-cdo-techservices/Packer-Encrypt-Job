@@ -3,7 +3,7 @@
         "region":         "us-east-2",
                 "aws_subnet_id": "subnet-061b3cc8692d0ad8e",
         "aws_vpc_id": "vpc-0ff05aa62c74b34bc",
-        "aws_ami_name": "ubuntu-custom-AMI"
+        "aws_ami_name": "ubuntu-custom-AMI-{{timestamp}}"
     },
     "builders": [
         {
@@ -32,6 +32,10 @@
             "type": "amazon-ebs",
                         "communicator": "ssh",
 		"tags": {
+        "OS_Version": "Ubuntu",
+        "Name": "ubuntu-custom-AMI"
+      },
+		"run_tags" : {
         "OS_Version": "Ubuntu",
         "Name": "ubuntu-custom-AMI"
       }
