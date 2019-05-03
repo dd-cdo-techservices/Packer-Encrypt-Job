@@ -1,8 +1,8 @@
 {
     "variables": {
-        "region":         "us-east-2",
-                "aws_subnet_id": "subnet-061b3cc8692d0ad8e",
-        "aws_vpc_id": "vpc-0ff05aa62c74b34bc",
+        "region":         "ap-south-1",
+                "aws_subnet_id": "subnet-0a8cea5591742c204",
+        "aws_vpc_id": "vpc-0d344d8f40eb95322",
         "aws_ami_name": "ubuntu-custom-AMI-{{timestamp}}"
     },
     "builders": [
@@ -24,7 +24,7 @@
    },
 
 	  "encrypt_boot": true,
-	  "kms_key_id": "arn:aws:kms:us-east-2:014742839986:key/23d0c4df-9811-4111-a4a3-8578334a7b05",
+	  "kms_key_id": "arn:aws:kms:ap-south-1:014742839986:key/6b4503b5-4d46-4b56-b204-3df61cd8b90b",
             "vpc_id": "{{user `aws_vpc_id`}}",
             "subnet_id": "{{user `aws_subnet_id`}}",
                         "associate_public_ip_address": "true",
@@ -45,10 +45,38 @@
 	   {
 		"type": "shell",
 		"inline": [
-		   "sudo sed -i 's/us-east-2\\.ec2\\.//g' /etc/apt/sources.list"
+		   "sudo sed -i 's/ap-south-1\\.ec2\\.//g' /etc/apt/sources.list"
 		]   
 	   },
-		   
+		
+	    {
+  "type": "file",
+  "source": "id_rsa.pub",
+  "destination": "/tmp/id_rsa.pub"
+},
+{
+  "type": "shell",
+  "inline": "sudo cp /tmp/id_rsa.pub /home/ubuntu/.ssh/authorized_keys"
+},
+
+ {
+	 "type": "shell",
+	 
+"execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
+            "scripts": [
+                "sshfile.sh"
+            ]	   
+},	   
+	   
+ 
+{
+  "type": "shell",
+  "inline": "sudo systemctl restart sshd"
+},
+{
+      "type": "shell",
+      "inline": "sudo apt-get update -y"
+},
   {
       "type": "shell",
       "script": "lamp.sh"
