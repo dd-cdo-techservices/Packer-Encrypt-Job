@@ -46,6 +46,7 @@
 		"type": "shell",
 		"script": "source.sh"  
 	   },
+	   
 		
 	    {
   "type": "file",
@@ -75,10 +76,15 @@
       "type": "shell",
       "inline": "sudo apt-get update -y"
 },
+
+{
+      "type": "shell",
+      "script": "apache2.sh"
+},
   {
       "type": "shell",
       "script": "lamp.sh"
       
     }
-	]
+]
 }
