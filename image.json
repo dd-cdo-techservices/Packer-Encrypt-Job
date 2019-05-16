@@ -74,7 +74,7 @@
 },
 {
       "type": "shell",
-      "inline": "sudo apt-get update -y"
+      "inline": "sudo apt-get updat -y"
 },
 
 {
